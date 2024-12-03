@@ -1,5 +1,5 @@
 from ..web import app, DEFAULT_PATH
-from ..database.models import session, RaceEvent
+from ..database.models import session, RaceEvent, Race
 
 @app.get(f"{DEFAULT_PATH}/raceEvents", description="Get all race events")
 async def get_raceEvents():
@@ -13,6 +13,9 @@ async def get_raceEvent(raceEvent_id: int):
 
 @app.post(f"{DEFAULT_PATH}/raceEvents", description="Create a new race event")
 async def create_raceEvent(race_id: int, type: int, sector: int):
+    race = session.query(Race).filter_by(id=race_id).first()
+    if race is None:
+        return {"error": "Race is not found"}, 404
     raceEvent = RaceEvent(race_id=race_id, type=type, sector=sector)
     session.add(raceEvent)
     session.commit()

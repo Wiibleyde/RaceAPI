@@ -1,5 +1,5 @@
 from ..web import app, DEFAULT_PATH
-from ..database.models import session, RaceLeaderboard
+from ..database.models import session, RaceLeaderboard, Race, Pilot
 
 @app.get(f"{DEFAULT_PATH}/leaderboard", description="Get the race leaderboard")
 async def get_leaderboard():
@@ -13,6 +13,12 @@ async def get_leaderboard_entry(leaderboard_id: int):
 
 @app.post(f"{DEFAULT_PATH}/leaderboard", description="Create a new leaderboard entry")
 async def create_leaderboard_entry(race_id: int, pilot_id: int, position: int, achievedLaps: int, pitstops: bool):
+    race = session.query(Race).filter_by(id=race_id).first()
+    if race is None:
+        return {"error": "Race is not found"}, 404
+    pilot = session.query(Pilot).filter_by(id=pilot_id).first()
+    if pilot is None:
+        return {"error": "Pilot is not found"}, 404
     leaderboard = RaceLeaderboard(race_id=race_id, pilot_id=pilot_id, position=position, achievedLaps=achievedLaps, pitstops=pitstops)
     session.add(leaderboard)
     session.commit()
