@@ -6,3 +6,6 @@ class RaceEvent(Enum):
     RED_FLAG = 3
     SAFETY_CAR = 4
     BLACK_FLAG = 5
+
+    def __str__(self):
+        return self.name.replace("_", " ").title()
