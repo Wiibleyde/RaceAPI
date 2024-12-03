@@ -1,5 +1,5 @@
 from ..web import app, DEFAULT_PATH
-from ..database.models import session, Race, Pilot, RaceLeaderboard
+from ..database.models import session, Race, Pilot, RaceLeaderboard, RaceLeaderboard
 
 
 @app.get(f"{DEFAULT_PATH}/races", description="Get all races", tags=["Races"])
@@ -67,3 +67,10 @@ async def delete_race(race_id: int):
     session.delete(race)
     session.commit()
     return race
+
+@app.get(f"{DEFAULT_PATH}/races/{{race_id}}/leaderboard", description="Get the leaderboard of a race", tags=["Races"])
+async def get_leaderboard_from_race(race_id: int):
+    leaderboard = session.query(RaceLeaderboard).join(Race).filter(Race.id == race_id).all()
+    if not leaderboard:
+        return {"error": "Race not found or no leaderboard in the race"}, 404
+    return leaderboard
