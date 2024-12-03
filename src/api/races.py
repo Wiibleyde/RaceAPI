@@ -19,8 +19,6 @@ async def get_race_pilots(race_id: int):
     race = session.query(Race).filter_by(id=race_id).first()
     if race is None:
         return {"error": "Race not found"}, 404
-    
-    # pilots = session.query(Pilot).filter_by(id=race_id).all()
     pilots = session.query(Pilot).join(RaceLeaderboard).filter(RaceLeaderboard.race_id == race_id).all()
     return pilots
 
