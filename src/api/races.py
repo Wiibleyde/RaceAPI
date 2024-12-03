@@ -2,19 +2,19 @@ from ..web import app, DEFAULT_PATH
 from ..database.models import session, Race
 
 
-@app.get(f"{DEFAULT_PATH}/races", description="Get all races")
+@app.get(f"{DEFAULT_PATH}/races", description="Get all races", tags=["Races"])
 async def get_races():
     races = session.query(Race).all()
     return races
 
 
-@app.get(f"{DEFAULT_PATH}/races/{{race_id}}", description="Get a race by ID")
+@app.get(f"{DEFAULT_PATH}/races/{{race_id}}", description="Get a race by ID", tags=["Races"])
 async def get_race(race_id: int):
     race = session.query(Race).filter_by(id=race_id).first()
     return race
 
 
-@app.post(f"{DEFAULT_PATH}/races", description="Create a new race")
+@app.post(f"{DEFAULT_PATH}/races", description="Create a new race", tags=["Races"])
 async def create_race(name: str, laps: int):
     if laps > 9223372036854775807:
         return {
@@ -29,7 +29,7 @@ async def create_race(name: str, laps: int):
     return race
 
 
-@app.put(f"{DEFAULT_PATH}/races/{{race_id}}", description="Update a race by ID")
+@app.put(f"{DEFAULT_PATH}/races/{{race_id}}", description="Update a race by ID", tags=["Races"])
 async def update_race(race_id: int, name: str, laps: int):
     if laps > 9223372036854775807:
         return {
@@ -48,7 +48,7 @@ async def update_race(race_id: int, name: str, laps: int):
     return race
 
 
-@app.delete(f"{DEFAULT_PATH}/races/{{race_id}}", description="Delete a race by ID")
+@app.delete(f"{DEFAULT_PATH}/races/{{race_id}}", description="Delete a race by ID", tags=["Races"])
 async def delete_race(race_id: int):
     race = session.query(Race).filter_by(id=race_id).first()
     if race is None:
