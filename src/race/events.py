@@ -1,6 +1,6 @@
 from enum import Enum
 
-class RaceEvent(Enum):
+class RaceEvents(Enum):
     GREEN_FLAG = 1
     YELLOW_FLAG = 2
     RED_FLAG = 3

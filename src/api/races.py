@@ -68,7 +68,10 @@ async def delete_race(race_id: int):
 
 @app.get(f"{DEFAULT_PATH}/races/{{race_id}}/leaderboard", description="Get the leaderboard of a race (sorted by position)", tags=["Races"])
 async def get_leaderboard_from_race(race_id: int):
-    leaderboard = session.query(RaceLeaderboard).join(Race).filter(Race.id == race_id).all().sort(key=lambda x: x.position)
+    race = session.query(Race).filter_by(id=race_id).first()
+    if race is None:
+        return {"error": "Race not found"}, 404
+    leaderboard = session.query(RaceLeaderboard).filter(RaceLeaderboard.race_id == race_id).order_by(RaceLeaderboard.position).all()
     if not leaderboard:
         return {"error": "Race not found or no leaderboard in the race"}, 404
     return leaderboard
