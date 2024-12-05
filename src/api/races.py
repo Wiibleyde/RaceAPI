@@ -66,7 +66,7 @@ async def delete_race(race_id: int):
     session.commit()
     return race
 
-@app.get(f"{DEFAULT_PATH}/races/{{race_id}}/leaderboard", description="Get the leaderboard of a race", tags=["Races"])
+@app.get(f"{DEFAULT_PATH}/races/{{race_id}}/leaderboard", description="Get the leaderboard of a race (sorted by position)", tags=["Races"])
 async def get_leaderboard_from_race(race_id: int):
     leaderboard = session.query(RaceLeaderboard).join(Race).filter(Race.id == race_id).all().sort(key=lambda x: x.position)
     if not leaderboard:
