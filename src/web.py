@@ -13,3 +13,4 @@ from src.api.pilots import *
 from src.api.races import *
 from src.api.raceLeaderboards import *
 from src.api.raceEvents import *
+from src.api.engine import *
