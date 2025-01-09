@@ -8,6 +8,10 @@ DEFAULT_PATH = "/api/v1"
 async def get_default_route():
     return {"message": "Welcome to the API", "path": DEFAULT_PATH, "docs": "/docs"}
 
+@app.get(f"{DEFAULT_PATH}/", description="default route", tags=["Default"], status_code=200)
+async def get_default_route():
+    return {"message": "Welcome to the API", "path": DEFAULT_PATH, "docs": "/docs"}
+
 from src.api.stables import *
 from src.api.pilots import *
 from src.api.races import *
