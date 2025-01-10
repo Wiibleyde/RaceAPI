@@ -6,12 +6,12 @@ from pydantic import BaseModel, Field
 
 class RaceEventPostRequest(BaseModel):
     race_id: int = Field(examples=[1])
-    type: int = Field(examples=[2])
+    type: str = Field(examples=[2])
     sector: int = Field(examples=[1])
 
 
 class RaceEventPutRequest(BaseModel):
-    type: int = Field(examples=[2])
+    type: str = Field(examples=[2])
     sector: int = Field(examples=[1])
 
 
@@ -41,16 +41,22 @@ async def get_raceEvent(raceEvent_id: int):
     tags=["Race events"],
 )
 async def create_raceEvent(race_event_request: RaceEventPostRequest):
+    print("race")
     race = session.query(Race).filter_by(id=race_event_request.race_id).first()
+    print("race sql finished")
     if race is None:
+        print("no race")
         raise HTTPException(status_code=404, detail="Race not found")
     raceEvent = RaceEvent(
         race_id=race_event_request.race_id,
         type=race_event_request.type,
         sector=race_event_request.sector,
     )
+    print("raceEvent")
     session.add(raceEvent)
+    print("session")
     session.commit()
+    print("commit")
     return raceEvent
 
 

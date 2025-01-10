@@ -44,7 +44,8 @@ class RaceLeaderboard(Base):
 
 class RaceEvent(Base):
     __tablename__ = 'race_event'
-    race_id = Column(Integer, ForeignKey('race.id'), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    race_id = Column(Integer, ForeignKey('race.id'))
     type = Column(SQLAlchemyEnum(RaceEvents))
     sector = Column(Integer)
 
